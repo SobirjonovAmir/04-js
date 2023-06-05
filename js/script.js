@@ -1,79 +1,306 @@
 const container = document.querySelector(".container")
+const show_all = document.querySelector(".buttons .show-all")
+const show_five = document.querySelector(".buttons .show-five")
+const cart_amount = document.querySelector('#cart-amount')
+const cart_btn = document.querySelector('.cart-btn')
+const cart_side = document.querySelector('.cart-side')
+const close_cart = document.querySelector('.close-cart')
+const selectAll = document.querySelector('.select-all input')
+const cart_box = document.querySelector(".scroll")
+const cart_hide = document.querySelector(".cart-box")
+const del_all = document.querySelector(".dell-all")
+const total_price = document.querySelector('.total-price')
 const divBox = document.createElement('div');
+let cart = []
+
 divBox.classList.add('box');
 container.append(divBox);
 
-for (let i = 0; i < 10; i++) {
-	const divBoxItem = document.createElement('div');
-	divBoxItem.classList.add('box-item');
 
-	const divItemTop = document.createElement('div');
-	divItemTop.classList.add('item-top');
+show_five.onclick = () => {
+	reload(arr.slice(0, 5))
+}
+show_all.onclick = () => {
+	reload(arr)
+}
 
-	const imgBag = document.createElement('img');
-	imgBag.src = 'img/bag.png';
+reload(arr)
 
-	const divItemBottom = document.createElement('div');
-	divItemBottom.classList.add('item-bottom');
+function reload(data) {
+	divBox.innerHTML = ""
 
-	const h2SupTitle = document.createElement('h2');
-	h2SupTitle.classList.add('sup-title');
-	h2SupTitle.textContent = 'Mens clothing (120)';
+	for (const product of data) {
+		const divBoxItem = document.createElement('div');
+		const divItemTop = document.createElement('div');
+		const imgBag = document.createElement('img');
+		const divItemBottom = document.createElement('div');
+		const h2SupTitle = document.createElement('h2');
+		const description = document.createElement('p');
+		const divSubTitle = document.createElement('div');
+		const divTitlePrice = document.createElement('div');
+		const imgPrice = document.createElement('img');
+		const spanPrice = document.createElement('span');
+		const divTitleRating = document.createElement('div');
+		const imgRating = document.createElement('img');
+		const spanRating = document.createElement('span');
+		const divTitleCount = document.createElement('div');
+		const imgCount = document.createElement('img');
+		const spanCount = document.createElement('span');
+		const buttonFavorite = document.createElement('button');
 
-	const description = document.createElement('p');
-	description.classList.add('description');
-	description.textContent = 'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday';
 
-	const divSubTitle = document.createElement('div');
-	divSubTitle.classList.add('sub-title');
+		divBoxItem.classList.add('box-item');
+		divItemTop.classList.add('item-top');
+		h2SupTitle.classList.add('sup-title');
+		divItemBottom.classList.add('item-bottom');
+		description.classList.add('description');
+		divSubTitle.classList.add('sub-title');
+		divTitlePrice.classList.add('title-price', 'title-item');
+		divTitleRating.classList.add('title-rating', 'title-item');
+		divTitleCount.classList.add('title-count', 'title-item');
 
-	const divTitlePrice = document.createElement('div');
-	divTitlePrice.classList.add('title-price','title-item');
 
-	const imgPrice = document.createElement('img');
-	imgPrice.src = 'img/price.svg';
+		imgBag.src = product.image
+		h2SupTitle.textContent = product.title.length > 20 ? product.title.slice(0, 20).trim() + "..." : product.title
+		description.innerHTML = product.description.length > 100 ? product.description.slice(0, 100) + " <b class='more' >more...</b>" : product.description
+		imgPrice.src = 'img/price.svg';
+		spanPrice.textContent = product.price;
+		imgRating.src = 'img/rating.svg';
+		spanRating.textContent = product.rating.rate;
+		imgCount.src = 'img/count.svg';
+		spanCount.textContent = product.rating.count;
+		buttonFavorite.textContent = 'В избранное';
 
-	const spanPrice = document.createElement('span');
-	spanPrice.textContent = '109';
 
-	const divTitleRating = document.createElement('div');
-	divTitleRating.classList.add('title-rating','title-item');
+		divBox.append(divBoxItem);
+		divBoxItem.append(divItemTop);
+		divItemTop.append(imgBag);
+		divBoxItem.append(divItemBottom);
+		divItemBottom.append(h2SupTitle, description, divSubTitle);
+		divSubTitle.append(divTitlePrice);
+		divTitlePrice.append(imgPrice, spanPrice);
+		divSubTitle.append(divTitleRating);
+		divTitleRating.append(imgRating, spanRating);
+		divSubTitle.append(divTitleCount);
+		divTitleCount.append(imgCount, spanCount);
+		divItemBottom.append(buttonFavorite);
 
-	const imgRating = document.createElement('img');
-	imgRating.src = 'img/rating.svg';
+		if (cart.includes(product.id)) {
+			buttonFavorite.classList.add('active-btn')
+			buttonFavorite.innerText = "Добавлено"
+		} else {
+			buttonFavorite.innerText = "В избранное"
+			buttonFavorite.classList.remove('active-btn')
+		}
 
-	const spanRating = document.createElement('span');
-	spanRating.textContent = '3,9';
+		buttonFavorite.onclick = () => {
+			if (cart.includes(product.id)) {
+				cart = cart.filter(id => id !== product.id)
+				buttonFavorite.classList.remove('active-btn')
+				buttonFavorite.innerText = "В избранное"
+			} else {
+				buttonFavorite.classList.add('active-btn')
+				cart.push(product.id)
+				buttonFavorite.innerText = "Добавлено"
+			}
+			cart_amount.innerHTML = cart.length
+			cart_arr(cart)
+		}
+	}
+}
 
-	const divTitleCount = document.createElement('div');
-	divTitleCount.classList.add('title-count','title-item');
 
-	const imgCount = document.createElement('img');
-	imgCount.src = 'img/count.svg';
+cart_btn.onclick = () => {
+	cart_side.style.width = 560
+	cart_side.classList.remove("hide");
+	cart_side.classList.add("show");
+}
 
-	const spanCount = document.createElement('span');
-	spanCount.textContent = '120';
+close_cart.onclick = () => {
+	cart_side.classList.remove("show")
+	cart_side.classList.add("hide")
+}
 
-	const buttonFavorite = document.createElement('button');
-	buttonFavorite.textContent = 'В избранное';
+selectAll.onchange = () => {
+	cart_arr(cart)
+}
 
-	divBox.append(divBoxItem);
-	divBoxItem.append(divItemTop);
-	divItemTop.append(imgBag);
-	divBoxItem.append(divItemBottom);
-	divItemBottom.append(h2SupTitle);
-	divItemBottom.append(description);
-	divItemBottom.append(divSubTitle);
-	divSubTitle.append(divTitlePrice);
-	divTitlePrice.append(imgPrice);
-	divTitlePrice.append(spanPrice);
-	divSubTitle.append(divTitleRating);
-	divTitleRating.append(imgRating);
-	divTitleRating.append(spanRating);
-	divSubTitle.append(divTitleCount);
-	divTitleCount.append(imgCount);
-	divTitleCount.append(spanCount);
-	divItemBottom.append(buttonFavorite);
+cart_arr(cart)
+
+function cart_arr(ids) {
+	cart_box.innerHTML = ""
+	total_price.innerHTML = 0
+	let total = 0
+
+	if (cart.length == '') {
+		selectAll.checked = false
+		selectAll.nextElementSibling.textContent = 'Выбрать все';
+	}
+
+	for (let product of arr) {
+		for (let cart_id of ids) {
+			if (cart_id === product.id) {
+				const divider = document.createElement("div")
+				const cart_item = document.createElement("div")
+				const checkbox = document.createElement("input")
+				const imgBox = document.createElement('div')
+				const image = document.createElement("img")
+				const item_title = document.createElement("div")
+				const sup_title = document.createElement("h3")
+				const sub_title = document.createElement("span")
+				const sub_price = document.createElement("div")
+				const inputBox = document.createElement("div")
+				const inputField = document.createElement('input');
+				const decrementButton = document.createElement('button');
+				const incrementButton = document.createElement('button');
+				const deleteBox = document.createElement("span")
+				const deleteBtn = document.createElement("img")
+				const price_amount = document.createElement("span")
+
+
+				divider.classList.add("divider")
+				cart_item.classList.add("cart-item")
+				checkbox.classList.add("checkbox")
+				imgBox.classList.add("img-box")
+				item_title.classList.add("item-title")
+				inputBox.classList.add("input-box")
+				decrementButton.classList.add("decrement")
+				incrementButton.classList.add("increment")
+				deleteBox.classList.add("delete-box")
+				deleteBtn.classList.add("delete")
+				price_amount.classList.add("price-amount")
+				sub_price.classList.add("sub-price")
+
+
+				checkbox.type = "checkbox"
+				image.src = product.image
+				sup_title.innerHTML = product.title.length > 40 ? product.title.slice(0, 40) + "..." : product.title
+				sub_title.innerHTML = product.category
+				sub_price.innerHTML = `${product.price} долл./ед.`
+				price_amount.innerHTML = product.price.toFixed(2) + " $"
+				inputField.type = 'text';
+				inputField.value = '1';
+				inputField.minLength = "1"
+				inputField.maxLength = product.rating.count
+				decrementButton.textContent = '−';
+				incrementButton.textContent = '+';
+				deleteBtn.src = "img/trash.svg"
+
+
+				deleteBox.append(deleteBtn)
+				cart_box.append(divider, cart_item)
+				cart_item.append(checkbox, imgBox, item_title, deleteBox, price_amount)
+				imgBox.append(image)
+				item_title.append(sup_title, sub_title, inputBox)
+				inputBox.append(decrementButton, inputField, incrementButton, sub_price);
+
+				deleteBtn.onclick = () => {
+					cart = cart.filter(el => el !== product.id)
+					reload(arr)
+					cart_arr(cart)
+					cart_amount.innerHTML = cart.length
+				}
+				del_all.onclick = () => {
+					cart = []
+					reload(arr)
+					cart_arr(cart)
+					cart_amount.innerHTML = cart.length
+				}
+
+				inputField.onblur = () => {
+					if (inputField.value == 0) {
+						inputField.value = 1
+					} else if (inputField.value > product.rating.count) {
+						inputField.value = product.rating.count
+					}
+					price_amount.innerHTML = formatNumber(product.price * inputField.value) + " $"
+				}
+				inputField.oninput = () => {
+					const inputValue = inputField.value;
+					const filteredValue = inputValue.replace(/\D/g, '');
+					inputField.value = filteredValue;
+				};
+
+				function formatNumber(number) {
+					const formattedNumber = Number(number).toFixed(2);
+					const parts = formattedNumber.toString().split('.');
+					parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+					return parts.join('.');
+				}
+
+				decrementButton.onclick = () => {
+					if (inputField.value == 2) {
+						sub_price.style.display = "none"
+					}
+					if (inputField.value <= 1) {
+						return
+					} else {
+						let value = parseInt(inputField.value);
+						value--;
+						inputField.value = value;
+						price_amount.innerHTML = formatNumber(product.price * value) + " $"
+						total_price.innerHTML = formatNumber(total -= product.price) + ' $'
+					}
+				};
+				incrementButton.onclick = () => {
+					if (inputField.value >= product.rating.count) {
+						return
+					} else {
+						sub_price.style.display = "block"
+						let value = parseInt(inputField.value);
+						value++;
+						inputField.value = value;
+						price_amount.innerHTML = formatNumber(product.price * value) + " $"
+						total_price.innerHTML = formatNumber(total += product.price) + ' $'
+					}
+				};
+
+				let allCheckboxes = document.querySelectorAll(".checkbox")
+				selectAll.checked = true
+				checkbox.checked = selectAll.checked
+				total_price.innerHTML = formatNumber(total += product.price) + " $"
+				updateCheckbox();
+
+
+				selectAll.onchange = () => {
+					allCheckboxes.forEach(checkbox => {
+						checkbox.checked = selectAll.checked;
+					});
+					updateCheckbox();
+				};
+
+				allCheckboxes.forEach(checkbox => {
+					checkbox.onchange = () => {
+						updateCheckbox();
+					};
+				});
+
+
+				function updateCheckbox() {
+					let allChecked = true;
+					let allUnchecked = true;
+
+					allCheckboxes.forEach(checkbox => {
+						if (checkbox.checked) {
+							allUnchecked = false;
+						} else {
+							allChecked = false;
+						}
+					})
+					if (allChecked) {
+						selectAll.checked = true;
+						selectAll.nextElementSibling.textContent = 'Убрать все';
+					} else if (allUnchecked) {
+						selectAll.checked = false;
+						selectAll.nextElementSibling.textContent = 'Выбрать все';
+					} else {
+						selectAll.checked = false;
+						selectAll.nextElementSibling.textContent = 'Выбрать все';
+					}
+				}
+			};
+		};
+	}
 }
 
 
@@ -89,293 +316,23 @@ for (let i = 0; i < 10; i++) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//Задача: Создание объекта
-//Создай объект person, который представляет собой человека со свойствами name и age. Затем добавь метод introduce, который будет выводить строку вида "Меня зовут [name] и мне [age] лет.".
-
-
-
-//Задача: Наследование
-//Создай базовый класс Vehicle с свойством color и методом start, который будет выводить сообщение "Автомобиль [color] цвета начал движение.". Затем создай производный класс Car, который наследует Vehicle и добавь ему метод honk, который будет выводить сообщение "Автомобиль [color] цвета сигналит.".
-
-//class Vehicle {
-//	constructor(color) {
-//		this.color = color
-//	}
-//	start() {
-//		return `Автомобиль ${this.color} цвета начал движение`
-//	}
-//}
-//let car = new Vehicle("черного")
-//console.log(car.start());
-
-//class Car extends Vehicle {
-//	honk() {
-//		return `Автомобиль ${this.color} цвета сигналит`
-//	}
-//}
-
-//let car2 = new Car("белого")
-
-//console.log(car2.honk());
-
-
-////Задача: Расчет площади
-////Создай класс Rectangle с конструктором, принимающим ширину и высоту прямоугольника. Добавь метод getArea, который будет возвращать площадь прямоугольника (ширина * высота).
-
-//class Rectangle {
-//	constructor(width, height) {
-//		this.width = width
-//		this.height = height
-//	}
-
-//	getArea() {
-//		return (this.width * this.height)
-//	}
-//}
-
-//let area = new Rectangle(200, 100)
-
-//console.log(area.getArea());
-
-
-
-////Задача: Учет товаров
-////Создай класс Product, который представляет товар со свойствами name и price. Затем создай класс Cart, который будет иметь свойство items (массив товаров) и методы addItem (добавление товара) и getTotal (получение общей стоимости товаров в корзине).
-
-
-//class Product {
-//	constructor(name, price) {
-//		this.name = name;
-//		this.price = price;
-//	}
-//}
-
-//let prod1 = new Product("Banan", 25)
-//let prod2 = new Product("Cucumber", 10)
-//let prod3 = new Product("Cherry", 15)
-//let prod4 = new Product("Tomato", 5)
-
-//class Cart {
-//	constructor() {
-//		this.items = []
-//	}
-//	addItem(product) {
-//		this.items.push(product);
-//	}
-//	getTotal() {
-//		let total = 0;
-//		for (let i = 0; i < this.items.length; i++) {
-//			total += this.items[i].price;
-//		}
-//		return total;
-//	}
-//}
-//let cart = new Cart()
-//cart.addItem(prod1)
-//cart.addItem(prod2)
-//cart.addItem(prod3)
-//cart.addItem(prod4)
-
-//console.log(cart.getTotal());
-
-
-
-//let body = document.body
-//let container = document.createElement("div")
-//let box = document.createElement("div")
-//let box_item = document.createElement("div")
-//let h2 = document.createElement("h2")
-//let btn = document.createElement("button")
-
-
-//container.classList.add("container")
-//box.classList.add("box")
-//box_item.classList.add("box-item")
-
-//h2.innerHTML = "Lorem Ipsum"
-//box_item.append(h2)
-//body.append(container)
-//container.append(box)
-//box.append(box_item)
-
-
-//for (let i = 0; i < 3; i++) {
-//	let p = document.createElement("p")
-//	box_item.append(p)
-//	p.innerHTML = "Lorem IPS dadasfa asf"
-//}
-//btn.innerHTML = "podrobnye"
-//box_item.append(btn)
-
-
-
-
-//let table = document.createElement("table")
-//let tr = document.createElement("tr")
-//let th = document.createElement("th")
-
-//body.append(table)
-
-
-//for (let i = 0; i < 5; i++) {
-//	table.append(tr)
-
-//}
-//for (let i = 0; i < 5; i++) {
-//	let td = document.createElement("td")
-//	td.innerHTML = "Somthing"
-//	tr.append(td)
-//}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//let form = document.forms.login
-//let inputs = document.querySelectorAll('input')
-
-//let patterns = {
-//	name: /^[a-z а-ё]+$/i,
-//	password: /^(?=.*[-\#\$\.\%\&\@\!\+\=\<\>\*])(?=.*[a-zA-Z])(?=.*\d).{8,12}$/,
-//	phone: /^9989[012345789][0-9]{7}$/,
-//	email: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-//}
-
-
-//let bool = true
-//function validation(regex, field) {
-//	if (regex.test(field.value)) {
-//		field.style.border = "2px solid blue"
-//		bool = false
-//	} else {
-//		field.style.border = "2px solid red"
-//		bool = true
-//	}
-//}
-
-//inputs.forEach(inp => {
-//	inp.onkeyup = () => {
-//		if (inp.name === "age") {
-//			if (inp.value >= 16 && inp.value <= 160) {
-//				inp.style.border = "2px solid blue"
-//				bool = false
-//			} else {
-//				inp.style.border = "2px solid red"
-//				bool = true
-//			}
-//		} else {
-//			validation(patterns[inp.name], inp)
-//		}
-//	}
-//})
-
-//form.onsubmit = (e) => {
-//	e.preventDefault();
-//	if (bool) {
-//		console.log("error");
-//	} else {
-//		submit(e)
-//	}
-//}
-
-
-//function submit(e) {
-//	let user = {}
-
-//	let fm = new FormData(e.target)
-
-//	fm.forEach((value, key) => {
-//		user[key] = value
-//	})
-
-//	console.log(user);
-//}
-
-
-
-
-
-
-
-
-
-
-
-//window.addEventListener('load', function () {
-//	var button = document.getElementById('changeColorButton');
-
-//	button.addEventListener('click', function () {
-//		var body = document.querySelector('body');
-//		body.style.backgroundColor = getRandomColor();
-//		console.log(getRandomColor());
-//	});
-//});
-
-//function getRandomColor() {
-//	var letters = '0123456789ABCDEF';
-//	var color = '#';
-//	for (var i = 0; i < 6; i++) {
-//		color += letters[Math.floor(Math.random() * 16)];
-//	}
-//	return color;
-//}
-
+				//checkbox.checked = selectAll.checked
+
+
+				//checkbox.onchange = () => {
+				//	if (checkbox.checked) {
+				//		selectAll.checked = true
+				//	} else {
+				//		selectAll.checked = false
+				//	}
+				//}
+
+				//if (checkbox.checked) {
+				//	selectAll.nextElementSibling.innerHTML = "Снять все"
+				//	checkbox.checked = false
+				//	console.log("true");
+				//} else {
+				//	console.log("false");
+				//	checkbox.checked = false
+				//	selectAll.nextElementSibling.innerHTML = "Выбрать все"
+				//}

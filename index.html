@@ -1,24 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-	<title>Моя Страница</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<title>Document</title>
 </head>
 
 <body>
-	
+
 	<div class="container">
 		<div class="title">
-			<h1>В корзинка: <span>1</span> товар</h1>
+			<h1>В корзинка: <span id="cart-amount">0</span> товаров</h1>
 			<div class="buttons">
-				<button class="show-first-five">Показать последние 5</button>
+				<button class="show-five">Показать последние 5</button>
 				<button class="show-all">Показать все</button>
+				<button class="cart-btn">Корзина</button>
 			</div>
 		</div>
 
-	</div>
 
+		<div class="cart-side">
+			<span class="close-cart">
+				<svg width="34" height="34" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+					class="close-icon-catalog">
+					<path
+						d="M6.28033 5.21967C5.98744 4.92678 5.51256 4.92678 5.21967 5.21967C4.92678 5.51256 4.92678 5.98744 5.21967 6.28033L10.9393 12L5.21967 17.7197C4.92678 18.0126 4.92678 18.4874 5.21967 18.7803C5.51256 19.0732 5.98744 19.0732 6.28033 18.7803L12 13.0607L17.7197 18.7803C18.0126 19.0732 18.4874 19.0732 18.7803 18.7803C19.0732 18.4874 19.0732 18.0126 18.7803 17.7197L13.0607 12L18.7803 6.28033C19.0732 5.98744 19.0732 5.51256 18.7803 5.21967C18.4874 4.92678 18.0126 4.92678 17.7197 5.21967L12 10.9393L6.28033 5.21967Z">
+					</path>
+				</svg>
+			</span>
+			<div class="head">
+				<div class="title">
+					<span>Корзина</span>
+				</div>
+			</div>
+			<div class="cart-box">
+				<div class="select-all">
+					<div class="check">
+						<input id="select" name="select" type="checkbox">
+						<label for="select">Выбрать все</label>
+					</div>
+					<div class="dell-all">
+						<img src="img/trash.svg" alt="trash can">
+						<span>Удалить все</span>
+					</div>
+				</div>
+				<div class="scroll">
+
+				</div>
+			</div>
+
+			<div class="cart-bottom">
+				<p>Ваш заказ</p>
+				<div class="divider"></div>
+				<h3>Общая стоимость: <span class="total-price">0.00</span> </h3>
+				<button class="cart-button">Перейти к оформлению</button>
+			</div>
+		</div>
+	</div>
+	<script src="js/product.js"></script>
 	<script src="js/script.js"></script>
 </body>
 
