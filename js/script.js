@@ -10,11 +10,8 @@ const cart_box = document.querySelector(".scroll")
 const cart_hide = document.querySelector(".cart-box")
 const del_all = document.querySelector(".dell-all")
 const total_price = document.querySelector('.total-price')
-const divBox = document.createElement('div');
+const divBox = document.querySelector('.box')
 let cart = []
-
-divBox.classList.add('box');
-container.append(divBox);
 
 
 show_five.onclick = () => {
@@ -126,7 +123,6 @@ selectAll.onchange = () => {
 }
 
 cart_arr(cart)
-
 function cart_arr(ids) {
 	cart_box.innerHTML = ""
 	total_price.innerHTML = 0
@@ -214,6 +210,8 @@ function cart_arr(ids) {
 						inputField.value = product.rating.count
 					}
 					price_amount.innerHTML = formatNumber(product.price * inputField.value) + " $"
+					total += formatNumber(product.price * inputField.value)
+					updateTotalPrice();
 				}
 				inputField.oninput = () => {
 					const inputValue = inputField.value;
@@ -240,8 +238,10 @@ function cart_arr(ids) {
 						inputField.value = value;
 						price_amount.innerHTML = formatNumber(product.price * value) + " $"
 						total_price.innerHTML = formatNumber(total -= product.price) + ' $'
+						updateTotalPrice();
 					}
 				};
+
 				incrementButton.onclick = () => {
 					if (inputField.value >= product.rating.count) {
 						return
@@ -252,35 +252,63 @@ function cart_arr(ids) {
 						inputField.value = value;
 						price_amount.innerHTML = formatNumber(product.price * value) + " $"
 						total_price.innerHTML = formatNumber(total += product.price) + ' $'
+						updateTotalPrice();
 					}
 				};
 
-				let allCheckboxes = document.querySelectorAll(".checkbox")
+
+
+
+
 				selectAll.checked = true
 				checkbox.checked = selectAll.checked
-				total_price.innerHTML = formatNumber(total += product.price) + " $"
-				updateCheckbox();
+				selectAll.nextElementSibling.innerHTML = 'Убрать все'
+
+				updateTotalPrice();
+
+				function updateTotalPrice() {
+					total = 0;
+
+					const checkboxes = document.querySelectorAll('.checkbox');
+					checkboxes.forEach(function (checkbox, index) {
+						let priceElement = document.querySelectorAll('.sub-price')[index]
+						let inputValue = document.querySelectorAll('.input-box input')[index]
+						if (checkbox.checked) {
+							total += parseFloat(priceElement.textContent) * parseFloat(inputValue.value);
+						}
+					});
+
+					total_price.textContent = formatNumber(total) + " $";
+				}
+
+				function checkboxChangeHandler() {
+					updateTotalPrice();
+				}
+
+				let checkboxes = document.querySelectorAll('.checkbox');
+				checkboxes.forEach(function (checkbox) {
+					checkbox.onchange = () => {
+						checkboxChangeHandler()
+						updateCheckbox()
+					}
+				});
 
 
 				selectAll.onchange = () => {
-					allCheckboxes.forEach(checkbox => {
+					checkboxes.forEach(checkbox => {
 						checkbox.checked = selectAll.checked;
+						checkboxChangeHandler()
 					});
 					updateCheckbox();
 				};
-
-				allCheckboxes.forEach(checkbox => {
-					checkbox.onchange = () => {
-						updateCheckbox();
-					};
-				});
 
 
 				function updateCheckbox() {
 					let allChecked = true;
 					let allUnchecked = true;
+					updateTotalPrice();
 
-					allCheckboxes.forEach(checkbox => {
+					checkboxes.forEach(checkbox => {
 						if (checkbox.checked) {
 							allUnchecked = false;
 						} else {
@@ -302,37 +330,3 @@ function cart_arr(ids) {
 		};
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-				//checkbox.checked = selectAll.checked
-
-
-				//checkbox.onchange = () => {
-				//	if (checkbox.checked) {
-				//		selectAll.checked = true
-				//	} else {
-				//		selectAll.checked = false
-				//	}
-				//}
-
-				//if (checkbox.checked) {
-				//	selectAll.nextElementSibling.innerHTML = "Снять все"
-				//	checkbox.checked = false
-				//	console.log("true");
-				//} else {
-				//	console.log("false");
-				//	checkbox.checked = false
-				//	selectAll.nextElementSibling.innerHTML = "Выбрать все"
-				//}
