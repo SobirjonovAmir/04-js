@@ -210,7 +210,6 @@ function cart_arr(ids) {
 						inputField.value = product.rating.count
 					}
 					price_amount.innerHTML = formatNumber(product.price * inputField.value) + " $"
-					total += formatNumber(product.price * inputField.value)
 					updateTotalPrice();
 				}
 				inputField.oninput = () => {
@@ -237,7 +236,6 @@ function cart_arr(ids) {
 						value--;
 						inputField.value = value;
 						price_amount.innerHTML = formatNumber(product.price * value) + " $"
-						total_price.innerHTML = formatNumber(total -= product.price) + ' $'
 						updateTotalPrice();
 					}
 				};
@@ -251,7 +249,6 @@ function cart_arr(ids) {
 						value++;
 						inputField.value = value;
 						price_amount.innerHTML = formatNumber(product.price * value) + " $"
-						total_price.innerHTML = formatNumber(total += product.price) + ' $'
 						updateTotalPrice();
 					}
 				};
